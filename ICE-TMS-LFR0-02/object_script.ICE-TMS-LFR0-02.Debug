@@ -1,0 +1,10 @@
+debug/main.o
+debug/mainwindow.o
+debug/qcustomplot.o
+debug/serialsetting.o
+debug/titlebar.o
+debug/qrc_images.o
+debug/moc_mainwindow.o
+debug/moc_qcustomplot.o
+debug/moc_serialsetting.o
+debug/moc_titlebar.o
