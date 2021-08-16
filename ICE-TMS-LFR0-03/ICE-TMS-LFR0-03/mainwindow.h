@@ -8,6 +8,7 @@
 
 #include "qcustomplot.h"
 #include "serialsetting.h"
+#include "color.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }

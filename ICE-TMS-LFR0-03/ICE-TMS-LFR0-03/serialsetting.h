@@ -6,6 +6,8 @@
 #include <QtSerialPort/QSerialPortInfo>
 #include <QTimer>
 
+#include "titlebar.h"
+
 namespace Ui {
 class serialSetting;
 }

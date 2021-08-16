@@ -14,7 +14,7 @@
 TitleBar::TitleBar(QWidget *parent)
     : QWidget(parent)
 {
-    setFixedHeight(30);
+    setFixedHeight(60);
 
     m_pIconLabel = new QLabel(this);
     m_pTitleLabel = new QLabel(this);
@@ -22,10 +22,11 @@ TitleBar::TitleBar(QWidget *parent)
     m_pMaximizeButton = new QPushButton(this);
     m_pCloseButton = new QPushButton(this);
 
-    m_pIconLabel->setFixedSize(20, 20);
+    m_pIconLabel->setFixedSize(60, 60);
     m_pIconLabel->setScaledContents(true);
 
     m_pTitleLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    m_pTitleLabel->setStyleSheet("color: rgb(250, 255, 255);font:15pt;");
 
     m_pMinimizeButton->setFixedSize(27, 22);
     m_pMaximizeButton->setFixedSize(27, 22);

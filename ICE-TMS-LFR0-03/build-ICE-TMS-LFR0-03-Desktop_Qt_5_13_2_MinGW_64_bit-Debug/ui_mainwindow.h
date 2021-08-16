@@ -31,12 +31,11 @@ public:
     QVBoxLayout *verticalLayout;
     QWidget *title;
     QHBoxLayout *horizontalLayout;
-    QLabel *label;
+    QLabel *lbMsg;
     QSpacerItem *horizontalSpacer_2;
     QProgressBar *pbBattery;
     QHBoxLayout *horizontalLayout_3;
     QPushButton *btnSerialSetting;
-    QPushButton *pushButton;
     QPushButton *OpenSerialButton;
     QPushButton *btnSave;
     QSpacerItem *horizontalSpacer;
@@ -66,6 +65,7 @@ public:
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         centralwidget->setMinimumSize(QSize(1500, 800));
+        centralwidget->setStyleSheet(QString::fromUtf8("background-color: rgb(4, 7, 38);"));
         verticalLayout = new QVBoxLayout(centralwidget);
         verticalLayout->setSpacing(0);
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
@@ -77,13 +77,13 @@ public:
         sizePolicy.setVerticalStretch(0);
         sizePolicy.setHeightForWidth(title->sizePolicy().hasHeightForWidth());
         title->setSizePolicy(sizePolicy);
-        title->setMinimumSize(QSize(0, 30));
-        title->setMaximumSize(QSize(16777215, 30));
+        title->setMinimumSize(QSize(0, 60));
+        title->setMaximumSize(QSize(16777215, 60));
         title->setSizeIncrement(QSize(0, 32));
         title->setBaseSize(QSize(0, 30));
         title->setStyleSheet(QString::fromUtf8("QWidget\n"
 "{\n"
-"	background-color:rgb(211, 211, 211)\n"
+"	background-color:rgb(48, 48, 85)\n"
 "}"));
 
         verticalLayout->addWidget(title);
@@ -91,10 +91,11 @@ public:
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
         horizontalLayout->setContentsMargins(5, 5, 5, 5);
-        label = new QLabel(centralwidget);
-        label->setObjectName(QString::fromUtf8("label"));
+        lbMsg = new QLabel(centralwidget);
+        lbMsg->setObjectName(QString::fromUtf8("lbMsg"));
+        lbMsg->setStyleSheet(QString::fromUtf8("color: rgb(255, 255, 255);"));
 
-        horizontalLayout->addWidget(label);
+        horizontalLayout->addWidget(lbMsg);
 
         horizontalSpacer_2 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
@@ -133,22 +134,10 @@ public:
         btnSerialSetting->setStyleSheet(QString::fromUtf8("QPushButton\n"
 "{\n"
 "    border-radius: 4px;\n"
-"    background-color: rgb(85, 170, 255);/*\350\203\214\346\231\257\350\211\262*/\n"
+"    background-color: rgb(213, 250, 255);/*\350\203\214\346\231\257\350\211\262*/\n"
 "}"));
 
         horizontalLayout_3->addWidget(btnSerialSetting);
-
-        pushButton = new QPushButton(centralwidget);
-        pushButton->setObjectName(QString::fromUtf8("pushButton"));
-        pushButton->setMinimumSize(QSize(0, 27));
-        pushButton->setFont(font);
-        pushButton->setStyleSheet(QString::fromUtf8("QPushButton\n"
-"{\n"
-"    border-radius: 4px;\n"
-"    background-color: rgb(85, 170, 255);/*\350\203\214\346\231\257\350\211\262*/\n"
-"}"));
-
-        horizontalLayout_3->addWidget(pushButton);
 
         OpenSerialButton = new QPushButton(centralwidget);
         OpenSerialButton->setObjectName(QString::fromUtf8("OpenSerialButton"));
@@ -164,7 +153,7 @@ public:
         OpenSerialButton->setStyleSheet(QString::fromUtf8("QPushButton\n"
 "{\n"
 "    border-radius: 4px;\n"
-"    background-color: rgb(85, 170, 255);/*\350\203\214\346\231\257\350\211\262*/\n"
+"    background-color: rgb(213, 250, 255);/*\350\203\214\346\231\257\350\211\262*/\n"
 "}"));
 
         horizontalLayout_3->addWidget(OpenSerialButton);
@@ -179,7 +168,7 @@ public:
         btnSave->setStyleSheet(QString::fromUtf8("QPushButton\n"
 "{\n"
 "    border-radius: 4px;\n"
-"    background-color: rgb(85, 170, 255);/*\350\203\214\346\231\257\350\211\262*/\n"
+"    background-color: rgb(213, 250, 255);/*\350\203\214\346\231\257\350\211\262*/\n"
 "}"));
 
         horizontalLayout_3->addWidget(btnSave);
@@ -285,7 +274,7 @@ public:
         label_6->setSizePolicy(sizePolicy4);
         label_6->setMaximumSize(QSize(110, 40));
         label_6->setFont(font);
-        label_6->setStyleSheet(QString::fromUtf8(""));
+        label_6->setStyleSheet(QString::fromUtf8("color: rgb(255, 255, 255);"));
         label_6->setTextFormat(Qt::AutoText);
         label_6->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter);
 
@@ -297,6 +286,7 @@ public:
         ID->setSizePolicy(sizePolicy4);
         ID->setMaximumSize(QSize(110, 40));
         ID->setFont(font);
+        ID->setStyleSheet(QString::fromUtf8("color: rgb(255, 255, 255);"));
 
         horizontalLayout_4->addWidget(ID);
 
@@ -309,6 +299,7 @@ public:
         label_7->setSizePolicy(sizePolicy5);
         label_7->setMaximumSize(QSize(110, 40));
         label_7->setFont(font);
+        label_7->setStyleSheet(QString::fromUtf8("color: rgb(255, 255, 255);"));
 
         horizontalLayout_4->addWidget(label_7);
 
@@ -321,6 +312,7 @@ public:
         temp->setSizePolicy(sizePolicy6);
         temp->setMaximumSize(QSize(110, 40));
         temp->setFont(font);
+        temp->setStyleSheet(QString::fromUtf8("color: rgb(255, 255, 255);"));
 
         horizontalLayout_4->addWidget(temp);
 
@@ -330,6 +322,7 @@ public:
         label_8->setSizePolicy(sizePolicy6);
         label_8->setMaximumSize(QSize(110, 40));
         label_8->setFont(font);
+        label_8->setStyleSheet(QString::fromUtf8("color: rgb(255, 255, 255);"));
 
         horizontalLayout_4->addWidget(label_8);
 
@@ -339,6 +332,7 @@ public:
         voltage->setSizePolicy(sizePolicy6);
         voltage->setMaximumSize(QSize(110, 40));
         voltage->setFont(font);
+        voltage->setStyleSheet(QString::fromUtf8("color: rgb(255, 255, 255);"));
 
         horizontalLayout_4->addWidget(voltage);
 
@@ -355,9 +349,8 @@ public:
     void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "MainWindow", nullptr));
-        label->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
+        lbMsg->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
         btnSerialSetting->setText(QCoreApplication::translate("MainWindow", "\344\270\262\345\217\243\350\256\276\347\275\256", nullptr));
-        pushButton->setText(QString());
         OpenSerialButton->setText(QCoreApplication::translate("MainWindow", "\346\211\223\345\274\200\344\270\262\345\217\243", nullptr));
         btnSave->setText(QCoreApplication::translate("MainWindow", "\345\274\200\345\247\213\350\256\260\345\275\225", nullptr));
         label_6->setText(QCoreApplication::translate("MainWindow", "ID\357\274\232", nullptr));

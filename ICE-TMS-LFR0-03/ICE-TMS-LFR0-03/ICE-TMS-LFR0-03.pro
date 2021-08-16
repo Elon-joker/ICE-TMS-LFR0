@@ -6,7 +6,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 
 CONFIG += c++11
 
-TARGET = ICE-TMS-LFR0-02
+TARGET = ICE-TMS-LFR0-03
 TEMPLATE = app
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings
@@ -27,6 +27,7 @@ SOURCES += \
     titlebar.cpp
 
 HEADERS += \
+    color.h \
     mainwindow.h \
     qcustomplot.h \
     serialsetting.h \

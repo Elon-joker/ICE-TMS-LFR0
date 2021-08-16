@@ -26,6 +26,9 @@
      <height>800</height>
     </size>
    </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(4, 7, 38);</string>
+   </property>
    <layout class="QVBoxLayout" name="verticalLayout">
     <property name="spacing">
      <number>0</number>
@@ -53,13 +56,13 @@
       <property name="minimumSize">
        <size>
         <width>0</width>
-        <height>30</height>
+        <height>60</height>
        </size>
       </property>
       <property name="maximumSize">
        <size>
         <width>16777215</width>
-        <height>30</height>
+        <height>60</height>
        </size>
       </property>
       <property name="sizeIncrement">
@@ -77,7 +80,7 @@
       <property name="styleSheet">
        <string notr="true">QWidget
 {
-	background-color:rgb(211, 211, 211)
+	background-color:rgb(48, 48, 85)
 }</string>
       </property>
      </widget>
@@ -97,7 +100,10 @@
        <number>5</number>
       </property>
       <item>
-       <widget class="QLabel" name="label">
+       <widget class="QLabel" name="lbMsg">
+        <property name="styleSheet">
+         <string notr="true">color: rgb(255, 255, 255);</string>
+        </property>
         <property name="text">
          <string>TextLabel</string>
         </property>
@@ -177,39 +183,11 @@
          <string notr="true">QPushButton
 {
     border-radius: 4px;
-    background-color: rgb(85, 170, 255);/*背景色*/
+    background-color: rgb(213, 250, 255);/*背景色*/
 }</string>
         </property>
         <property name="text">
          <string>串口设置</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pushButton">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>27</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Times New Roman</family>
-          <pointsize>11</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
-         </font>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QPushButton
-{
-    border-radius: 4px;
-    background-color: rgb(85, 170, 255);/*背景色*/
-}</string>
-        </property>
-        <property name="text">
-         <string/>
         </property>
        </widget>
       </item>
@@ -248,7 +226,7 @@
          <string notr="true">QPushButton
 {
     border-radius: 4px;
-    background-color: rgb(85, 170, 255);/*背景色*/
+    background-color: rgb(213, 250, 255);/*背景色*/
 }</string>
         </property>
         <property name="text">
@@ -288,7 +266,7 @@
          <string notr="true">QPushButton
 {
     border-radius: 4px;
-    background-color: rgb(85, 170, 255);/*背景色*/
+    background-color: rgb(213, 250, 255);/*背景色*/
 }</string>
         </property>
         <property name="text">
@@ -489,7 +467,7 @@
          </font>
         </property>
         <property name="styleSheet">
-         <string notr="true"/>
+         <string notr="true">color: rgb(255, 255, 255);</string>
         </property>
         <property name="text">
          <string>ID：</string>
@@ -524,6 +502,9 @@
           <bold>true</bold>
          </font>
         </property>
+        <property name="styleSheet">
+         <string notr="true">color: rgb(255, 255, 255);</string>
+        </property>
         <property name="text">
          <string>None</string>
         </property>
@@ -550,6 +531,9 @@
           <weight>75</weight>
           <bold>true</bold>
          </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: rgb(255, 255, 255);</string>
         </property>
         <property name="text">
          <string>冷端温度：</string>
@@ -578,6 +562,9 @@
           <bold>true</bold>
          </font>
         </property>
+        <property name="styleSheet">
+         <string notr="true">color: rgb(255, 255, 255);</string>
+        </property>
         <property name="text">
          <string>None</string>
         </property>
@@ -605,6 +592,9 @@
           <bold>true</bold>
          </font>
         </property>
+        <property name="styleSheet">
+         <string notr="true">color: rgb(255, 255, 255);</string>
+        </property>
         <property name="text">
          <string>电压值：</string>
         </property>
@@ -631,6 +621,9 @@
           <weight>75</weight>
           <bold>true</bold>
          </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: rgb(255, 255, 255);</string>
         </property>
         <property name="text">
          <string>None</string>

@@ -28,8 +28,8 @@ MainWindow::MainWindow(QWidget *parent)
     installEventFilter(pTitleBar);
 
     resize(400, 300);
-    setWindowTitle("Custom Window");
-    setWindowIcon(QIcon(":/image/log/image/motologo.png"));
+    setWindowTitle("ICE-TMS-LFR0");
+    setWindowIcon(QIcon(":/image/log/image/motolog.png"));
 
     QVBoxLayout *pLayout = new QVBoxLayout();
     pLayout->addWidget(pTitleBar);
@@ -70,7 +70,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     //定时器，用于更新电池电量
     timer = new QTimer();
-    timer->start(1000); //一秒一次检测
+    timer->start(2000); //2秒一次检测
 
     //链接信号与槽（即动作与响应的关联）
     //connect（谁发出信号，什么信号，谁响应事件，什么响应事件）；
@@ -213,6 +213,8 @@ void MainWindow::ReadData()
        CRC=static_cast<char>(buf_hex[26]&0xff);
 
        //动态存储数据
+       int maxIndex=0,minIndex=0;
+       double maxT=0.0,minT=INT_MAX;
        for(int i=0;i<8;i++){
            double data_temp=static_cast<double>( (buf_hex[8+i]&0xff)<<8|(buf_hex[9+i]&0xff) )*P;
 
@@ -230,7 +232,22 @@ void MainWindow::ReadData()
                y[i].append(F(data_temp,Temperature));
                x[i].append(count);
            }
+
+           if(maxT<y[i][count%COLUMN])
+           {
+               maxT=y[i][count%COLUMN];
+               maxIndex=i;
+           }
+           if(minT>y[i][count%COLUMN])
+           {
+               minT=y[i][count%COLUMN];
+               minIndex=i;
+           }
        }
+
+       ui->lbMsg->setText(tr("最高温度:\t%1\t通道数:\t%2\t\t最低温度:\t%3\t通道数 %4")
+                          .arg(maxT).arg(maxIndex+1).arg(minT).arg(minIndex+1));
+
        if(flageSaveData)
        {
            //由于数据传输较慢，所以每一帧数据直接存储
@@ -296,7 +313,7 @@ void MainWindow::showChart()
     //设置数据源和绘图画笔
     for(int i=0;i<8;i++){
         pGraph[i]->setData(x[i],y[i]);
-        pGraph[i]->setPen(QPen(Qt::black));
+        pGraph[i]->setPen(QPen(ColorLine1,2));
     }
    //绘制曲线
     for (int i=0;i<8;i++) {
@@ -383,15 +400,32 @@ void MainWindow::init()
 
     for (int i=0;i<8;i++) {
         CP[i]->plotLayout()->insertRow(0);
+        m_title[i]->setTextColor(ColorChartText);
         CP[i]->plotLayout()->addElement(0, 0, m_title[i]);
-        CP[i]->setBackground(QColor(255,255,255));
+        //颜色设定
+        CP[i]->setBackground(ColorChartBg);
+        CP[i]->xAxis->setBasePen(QPen(ColorChartGrid,4));
+        CP[i]->yAxis->setBasePen(QPen(ColorChartGrid,4));
+        CP[i]->xAxis->grid()->setPen(QPen(ColorChartGrid, 1, Qt::PenStyle::DashLine));//网格白色虚线
+        CP[i]->yAxis->grid()->setPen(QPen(ColorChartGrid, 1, Qt::PenStyle::DashLine));
+        CP[i]->xAxis->grid()->setSubGridPen(QPen(ColorChartGrid, 1, Qt::DotLine));//网格浅色点线
+        CP[i]->yAxis->grid()->setSubGridPen(QPen(ColorChartGrid, 1, Qt::DotLine));
+        CP[i]->xAxis->grid()->setSubGridVisible(true);//显示x轴子网格线
+        CP[i]->yAxis->grid()->setSubGridVisible(true);
+        CP[i]->xAxis->setLabelColor(ColorChartText);
+        CP[i]->yAxis->setLabelColor(ColorChartText);
+        CP[i]->xAxis->setTickLabelColor(ColorChartText);
+        CP[i]->yAxis->setTickLabelColor(ColorChartText);
     }
 
     Voltage=BATTERY_MIN;
+
+    ui->lbMsg->setText("最高温度:\t*\t通道数:\t*\t\t最低温度:\t*\t通道数:\t*");
 }
 
 void MainWindow::on_serialSetting()
 {
+    setting->setWindowModality(Qt::ApplicationModal);
     setting->show();
     qDebug()<<setting->getBaudRateIndex();
 }
@@ -438,7 +472,7 @@ void MainWindow::UpdateBattery()
         if(batteryValue/10>=30)
             pProgressBar->setStyleSheet(
                         "QProgressBar {border: 2px solid grey;border-radius: 5px;background-color: #FFFFFF;}"
-                        "QProgressBar::chunk{background-color: #FFFF00;width: 20px;}");
+                        "QProgressBar::chunk{background-color: #FFBF00;width: 20px;}");
         else
          pProgressBar->setStyleSheet(
                         "QProgressBar {border: 2px solid grey;border-radius: 5px;background-color: #FFFFFF;}"

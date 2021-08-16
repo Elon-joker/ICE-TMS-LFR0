@@ -3,6 +3,6 @@
         <file>image/close.png</file>
         <file>image/Maxmize.png</file>
         <file>image/Minimize.png</file>
-        <file>image/motologo.png</file>
+        <file>image/motolog.png</file>
     </qresource>
 </RCC>

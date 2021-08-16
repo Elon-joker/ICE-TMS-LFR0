@@ -6,30 +6,33 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>400</height>
+    <width>600</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>400</width>
-    <height>400</height>
+    <width>600</width>
+    <height>600</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>400</width>
-    <height>400</height>
+    <width>600</width>
+    <height>600</height>
    </size>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>串口设置</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(210, 210, 210);</string>
   </property>
   <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
-     <x>60</x>
-     <y>0</y>
+     <x>10</x>
+     <y>60</y>
      <width>263</width>
      <height>313</height>
     </rect>
@@ -39,10 +42,26 @@
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
        <widget class="QLabel" name="label">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>25</height>
+         </size>
+        </property>
         <property name="font">
          <font>
           <pointsize>14</pointsize>
          </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: rgb(0, 0, 0);
+background-color: rgb(255, 255, 255,0);</string>
         </property>
         <property name="text">
          <string>串口</string>
@@ -51,10 +70,25 @@
       </item>
       <item>
        <widget class="QLabel" name="label_2">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>25</height>
+         </size>
+        </property>
         <property name="font">
          <font>
           <pointsize>14</pointsize>
          </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(255, 255, 255,0);</string>
         </property>
         <property name="text">
          <string>波特率</string>
@@ -63,10 +97,25 @@
       </item>
       <item>
        <widget class="QLabel" name="label_4">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>25</height>
+         </size>
+        </property>
         <property name="font">
          <font>
           <pointsize>14</pointsize>
          </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(255, 255, 255,0);</string>
         </property>
         <property name="text">
          <string>数据位</string>
@@ -75,10 +124,25 @@
       </item>
       <item>
        <widget class="QLabel" name="label_3">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>25</height>
+         </size>
+        </property>
         <property name="font">
          <font>
           <pointsize>14</pointsize>
          </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(255, 255, 255,0);</string>
         </property>
         <property name="text">
          <string>奇偶检验</string>
@@ -87,10 +151,19 @@
       </item>
       <item>
        <widget class="QLabel" name="label_5">
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>25</height>
+         </size>
+        </property>
         <property name="font">
          <font>
           <pointsize>14</pointsize>
          </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(255, 255, 255,0);</string>
         </property>
         <property name="text">
          <string>停止位</string>
@@ -108,6 +181,9 @@
           <pointsize>14</pointsize>
          </font>
         </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(213, 250, 255);/*背景色*/</string>
+        </property>
         <item>
          <property name="text">
           <string>NO</string>
@@ -121,6 +197,9 @@
          <font>
           <pointsize>14</pointsize>
          </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(213, 250, 255);/*背景色*/</string>
         </property>
         <item>
          <property name="text">
@@ -146,6 +225,9 @@
           <pointsize>14</pointsize>
          </font>
         </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(213, 250, 255);/*背景色*/</string>
+        </property>
         <item>
          <property name="text">
           <string>8</string>
@@ -160,6 +242,9 @@
           <pointsize>14</pointsize>
          </font>
         </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(213, 250, 255);/*背景色*/</string>
+        </property>
         <item>
          <property name="text">
           <string>NO</string>
@@ -173,6 +258,9 @@
          <font>
           <pointsize>14</pointsize>
          </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(213, 250, 255);/*背景色*/</string>
         </property>
         <item>
          <property name="text">
@@ -193,8 +281,8 @@
   <widget class="QPushButton" name="ok">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>350</y>
+     <x>90</x>
+     <y>510</y>
      <width>93</width>
      <height>28</height>
     </rect>
@@ -204,6 +292,13 @@
      <family>Times New Roman</family>
      <pointsize>12</pointsize>
     </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton
+{
+    border-radius: 4px;
+    background-color: rgb(213, 250, 255);/*背景色*/
+}</string>
    </property>
    <property name="text">
     <string>OK</string>
@@ -212,8 +307,8 @@
   <widget class="QPushButton" name="cancel">
    <property name="geometry">
     <rect>
-     <x>280</x>
-     <y>350</y>
+     <x>400</x>
+     <y>510</y>
      <width>93</width>
      <height>28</height>
     </rect>
@@ -224,8 +319,34 @@
      <pointsize>12</pointsize>
     </font>
    </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton
+{
+    border-radius: 4px;
+    background-color: rgb(213, 250, 255);/*背景色*/
+}</string>
+   </property>
    <property name="text">
     <string>Cancel</string>
+   </property>
+  </widget>
+  <widget class="QWidget" name="title" native="true">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>600</width>
+     <height>60</height>
+    </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(48, 48, 85);</string>
    </property>
   </widget>
  </widget>

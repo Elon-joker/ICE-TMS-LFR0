@@ -6,6 +6,22 @@ serialSetting::serialSetting(QWidget *parent) :
     ui(new Ui::serialSetting)
 {
     ui->setupUi(this);
+
+    setWindowFlags(Qt::FramelessWindowHint | windowFlags());
+
+    TitleBar *pTitleBar = new TitleBar(this);
+    installEventFilter(pTitleBar);
+
+    resize(400, 300);
+    setWindowTitle("串口设置");
+    setWindowIcon(QIcon(":/image/log/image/motolog.png"));
+
+    QVBoxLayout *pLayout = new QVBoxLayout();
+    pLayout->addWidget(pTitleBar);
+    pLayout->addStretch();
+    pLayout->setSpacing(0);
+    pLayout->setContentsMargins(0, 0, 0, 0);
+    ui->title->setLayout(pLayout);
     //定时器，用于更新串口
     timer = new QTimer();
     timer->start(1000); //一次检测
