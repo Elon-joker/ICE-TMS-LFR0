@@ -346,7 +346,7 @@ background-color: rgb(255, 255, 255,0);</string>
     </sizepolicy>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color: rgb(48, 48, 85);</string>
+    <string notr="true"> background-color: rgb(48, 48, 85);</string>
    </property>
   </widget>
  </widget>

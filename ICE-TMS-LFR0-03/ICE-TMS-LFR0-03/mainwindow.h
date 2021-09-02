@@ -60,6 +60,7 @@ private:
     void init();
     void showChart();
     void saveData(QString data,QString path,QString fileName);
+    bool checkData();
 private slots:
     void on_OpenSerialButton_clicked();
 

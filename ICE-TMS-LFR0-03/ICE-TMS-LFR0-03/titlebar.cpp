@@ -17,7 +17,7 @@ TitleBar::TitleBar(QWidget *parent)
     setFixedHeight(60);
 
     m_pIconLabel = new QLabel(this);
-    m_pTitleLabel = new QLabel(this);
+    m_pTitleLabel = new                                                          QLabel(this);
     m_pMinimizeButton = new QPushButton(this);
     m_pMaximizeButton = new QPushButton(this);
     m_pCloseButton = new QPushButton(this);
@@ -26,7 +26,7 @@ TitleBar::TitleBar(QWidget *parent)
     m_pIconLabel->setScaledContents(true);
 
     m_pTitleLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    m_pTitleLabel->setStyleSheet("color: rgb(250, 255, 255);font:15pt;");
+    m_pTitleLabel->setStyleSheet("color: rgb(255, 255, 255);font:20pt;");
 
     m_pMinimizeButton->setFixedSize(27, 22);
     m_pMaximizeButton->setFixedSize(27, 22);
@@ -131,7 +131,6 @@ bool TitleBar::eventFilter(QObject *obj, QEvent *event)
     default:
         return QWidget::eventFilter(obj, event);
     }
-//    return QWidget::eventFilter(obj, event);
 }
 
 void TitleBar::onClicked()
@@ -174,4 +173,19 @@ void TitleBar::updateMaximize()
 
         m_pMaximizeButton->setStyle(QApplication::style());
     }
+}
+
+QLabel *TitleBar::pTitleLabel() const
+{
+    return m_pTitleLabel;
+}
+
+QPushButton *TitleBar::pMaximizeButton() const
+{
+    return m_pMaximizeButton;
+}
+
+QPushButton *TitleBar::pMinimizeButton() const
+{
+    return m_pMinimizeButton;
 }

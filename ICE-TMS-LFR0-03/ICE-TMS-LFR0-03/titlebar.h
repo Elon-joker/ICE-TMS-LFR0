@@ -14,6 +14,12 @@ public:
     explicit TitleBar(QWidget *parent = nullptr);
     ~TitleBar();
 
+    QPushButton *pMinimizeButton() const;
+
+    QPushButton *pMaximizeButton() const;
+
+    QLabel *pTitleLabel() const;
+
 protected:
 
     // 双击标题栏进行界面的最大化/还原

@@ -7,6 +7,7 @@
 #include <QTimer>
 
 #include "titlebar.h"
+#include "titlebard.h"
 
 namespace Ui {
 class serialSetting;

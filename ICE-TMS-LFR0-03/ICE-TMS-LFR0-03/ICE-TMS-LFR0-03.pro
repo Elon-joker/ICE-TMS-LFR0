@@ -24,14 +24,16 @@ SOURCES += \
     mainwindow.cpp \
     qcustomplot.cpp \
     serialsetting.cpp \
-    titlebar.cpp
+    titlebar.cpp \
+    titlebard.cpp
 
 HEADERS += \
     color.h \
     mainwindow.h \
     qcustomplot.h \
     serialsetting.h \
-    titlebar.h
+    titlebar.h \
+    titlebard.h
 
 FORMS += \
     mainwindow.ui \

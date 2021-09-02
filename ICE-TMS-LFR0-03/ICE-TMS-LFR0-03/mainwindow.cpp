@@ -7,18 +7,23 @@
 #define HEAD 0xABCD
 #define ROW 8
 #define COLUMN 100
-#define P 0.512/32768.0
+
+#define P 0.256/32768.0
+
 #define P1 0.04161
 #define P2 -0.1395
 #define BATTERY_MAX 3.0
-#define BATTERY_MIN 2.5
+#define BATTERY_MIN 2.0
 
-#define F(x,y) ((P1)*(x)*1000+(P2)+(y))
-#define GS(x) (x)>COLUMN?(x)-COLUMN:0
+#define F(x,y) ( ((x)*1000-P2)/(P1)+(y) )
+#define GS(x) ( (x)>COLUMN?(x)-COLUMN:0 )
+#define CHECK(x) x //( (x)>32768?0:(x) )
+
+#define TEMPERTURE_MAX 500
+#define TEMPERTURE_DELTA 10
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-//    :QMainWindow(parent, Qt::FramelessWindowHint)  //在此设置WindowFlags
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
@@ -70,7 +75,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     //定时器，用于更新电池电量
     timer = new QTimer();
-    timer->start(2000); //2秒一次检测
 
     //链接信号与槽（即动作与响应的关联）
     //connect（谁发出信号，什么信号，谁响应事件，什么响应事件）；
@@ -215,8 +219,9 @@ void MainWindow::ReadData()
        //动态存储数据
        int maxIndex=0,minIndex=0;
        double maxT=0.0,minT=INT_MAX;
+       //数据转换
        for(int i=0;i<8;i++){
-           double data_temp=static_cast<double>( (buf_hex[8+i]&0xff)<<8|(buf_hex[9+i]&0xff) )*P;
+           double data_temp=CHECK(static_cast<int16_t>( (buf_hex[8+i*2]&0xff)<<8|(buf_hex[9+i*2]&0xff) ))*P;
 
            if(count < COLUMN)
            {
@@ -243,6 +248,7 @@ void MainWindow::ReadData()
                minT=y[i][count%COLUMN];
                minIndex=i;
            }
+
        }
 
        ui->lbMsg->setText(tr("最高温度:\t%1\t通道数:\t%2\t\t最低温度:\t%3\t通道数 %4")
@@ -498,9 +504,26 @@ void MainWindow::UpdateBattery()
         }
     }
     pProgressBar->setMinimum(0);  // 最小值
-    pProgressBar->setMaximum(100);  // 最大值
-    pProgressBar->setValue(batteryValue/10);  // 当前进度
+    pProgressBar->setMaximum(50);  // 最大值
+    pProgressBar->setValue(batteryValue/20);  // 当前进度
     double dProgress = batteryValue/10.0;
     pProgressBar->setFormat(tr("%1%").arg(dProgress));
-    pProgressBar->setAlignment(Qt::AlignRight | Qt::AlignVCenter);  // 对齐方式
+    pProgressBar->setAlignment(Qt::AlignVCenter);  // 对齐方式
+}
+
+
+bool MainWindow::checkData()
+{
+    if(count==0)
+        return true;
+    for (int i=0;i<8;i++)
+    {
+        if(y[i][count]>TEMPERTURE_MAX)
+            return false;
+        if( (y[i][count]-y[i][count-1])>TEMPERTURE_DELTA||
+            (y[i][count]-y[i][count-1])<-TEMPERTURE_DELTA )
+            return false;
+    }
+
+    return true;
 }

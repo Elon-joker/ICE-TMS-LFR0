@@ -9,12 +9,16 @@ serialSetting::serialSetting(QWidget *parent) :
 
     setWindowFlags(Qt::FramelessWindowHint | windowFlags());
 
-    TitleBar *pTitleBar = new TitleBar(this);
+    TitleBarD *pTitleBar = new TitleBarD(this);
     installEventFilter(pTitleBar);
 
     resize(400, 300);
-    setWindowTitle("串口设置");
+    pTitleBar->pTitleLabel()->setText("串口设置");
     setWindowIcon(QIcon(":/image/log/image/motolog.png"));
+
+    //隐藏按键
+    pTitleBar->pMaximizeButton()->hide();
+    pTitleBar->pMinimizeButton()->hide();
 
     QVBoxLayout *pLayout = new QVBoxLayout();
     pLayout->addWidget(pTitleBar);
