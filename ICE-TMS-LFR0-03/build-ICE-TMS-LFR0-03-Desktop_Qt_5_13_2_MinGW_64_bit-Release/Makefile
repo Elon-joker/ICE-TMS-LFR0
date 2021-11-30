@@ -226,6 +226,7 @@ Makefile: ../ICE-TMS-LFR0-03/ICE-TMS-LFR0-03.pro ../../../../Qt/5.13.2/mingw73_6
 		../../../../Qt/5.13.2/mingw73_64/mkspecs/features/qt_config.prf \
 		../../../../Qt/5.13.2/mingw73_64/mkspecs/win32-g++/qmake.conf \
 		../../../../Qt/5.13.2/mingw73_64/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		../../../../Qt/5.13.2/mingw73_64/mkspecs/features/exclusive_builds.prf \
 		../../../../Qt/5.13.2/mingw73_64/mkspecs/features/toolchain.prf \
 		../../../../Qt/5.13.2/mingw73_64/mkspecs/features/default_pre.prf \
@@ -419,6 +420,7 @@ Makefile: ../ICE-TMS-LFR0-03/ICE-TMS-LFR0-03.pro ../../../../Qt/5.13.2/mingw73_6
 ../../../../Qt/5.13.2/mingw73_64/mkspecs/features/qt_config.prf:
 ../../../../Qt/5.13.2/mingw73_64/mkspecs/win32-g++/qmake.conf:
 ../../../../Qt/5.13.2/mingw73_64/mkspecs/features/spec_post.prf:
+.qmake.stash:
 ../../../../Qt/5.13.2/mingw73_64/mkspecs/features/exclusive_builds.prf:
 ../../../../Qt/5.13.2/mingw73_64/mkspecs/features/toolchain.prf:
 ../../../../Qt/5.13.2/mingw73_64/mkspecs/features/default_pre.prf:

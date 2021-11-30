@@ -29,6 +29,7 @@ serialSetting::serialSetting(QWidget *parent) :
     //定时器，用于更新串口
     timer = new QTimer();
     timer->start(1000); //一次检测
+
     QStringList newPortStringList;
     const auto infos = QSerialPortInfo::availablePorts();
     for (const QSerialPortInfo &info : infos)
@@ -156,5 +157,9 @@ void serialSetting::UpdatePort()
          ui->PortBox->clear();
          ui->PortBox->addItems(oldPortStringList);
     }
+    if(newPortStringList.size() == 0)
+        ui->PortBox->addItem("NO");
+
+     setPortName(ui->PortBox->currentText());
 }
 

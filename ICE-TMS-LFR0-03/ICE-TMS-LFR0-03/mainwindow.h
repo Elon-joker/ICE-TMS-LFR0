@@ -26,7 +26,6 @@ private:
     QVector<QVector<double>> y,x; // initialize with entries (0..5000)x8
     Ui::MainWindow *ui;
     QSerialPort *serial;
-    QTimer *timer;
 
     //data filePath
     QString summaryPath;
@@ -34,10 +33,8 @@ private:
     QString summaryFile;
     QString sublistFile;
     int count=0;
-    QByteArray buf;
-    char* buf_hex;
+    QByteArray buf_hex;
 
-    //serial setting window
     serialSetting *setting=new serialSetting();
 
     int sequence;
@@ -45,8 +42,9 @@ private:
     //检测丢帧率
     int sequence_last=-1;
     int sequence_error_count=0;
+
     QVector<double> temperature;
-    double Temperature;
+    float Temperature;
     double Voltage=0.0;
     char CRC;
 
@@ -61,12 +59,15 @@ private:
     void showChart();
     void saveData(QString data,QString path,QString fileName);
     bool checkData();
+
+    void dataProcess(QByteArray data);
+    void sleep(int msec);
 private slots:
     void on_OpenSerialButton_clicked();
 
     void ReadData();
 
-    void on_saveButton_clicked();
+    void on_btnSave_clicked();
 
     void on_serialSetting();
 

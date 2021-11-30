@@ -23,7 +23,7 @@ QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_MainWindow_t {
     QByteArrayData data[7];
-    char stringdata0[102];
+    char stringdata0[99];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -36,13 +36,13 @@ QT_MOC_LITERAL(0, 0, 10), // "MainWindow"
 QT_MOC_LITERAL(1, 11, 27), // "on_OpenSerialButton_clicked"
 QT_MOC_LITERAL(2, 39, 0), // ""
 QT_MOC_LITERAL(3, 40, 8), // "ReadData"
-QT_MOC_LITERAL(4, 49, 21), // "on_saveButton_clicked"
-QT_MOC_LITERAL(5, 71, 16), // "on_serialSetting"
-QT_MOC_LITERAL(6, 88, 13) // "UpdateBattery"
+QT_MOC_LITERAL(4, 49, 18), // "on_btnSave_clicked"
+QT_MOC_LITERAL(5, 68, 16), // "on_serialSetting"
+QT_MOC_LITERAL(6, 85, 13) // "UpdateBattery"
 
     },
     "MainWindow\0on_OpenSerialButton_clicked\0"
-    "\0ReadData\0on_saveButton_clicked\0"
+    "\0ReadData\0on_btnSave_clicked\0"
     "on_serialSetting\0UpdateBattery"
 };
 #undef QT_MOC_LITERAL
@@ -85,7 +85,7 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         switch (_id) {
         case 0: _t->on_OpenSerialButton_clicked(); break;
         case 1: _t->ReadData(); break;
-        case 2: _t->on_saveButton_clicked(); break;
+        case 2: _t->on_btnSave_clicked(); break;
         case 3: _t->on_serialSetting(); break;
         case 4: _t->UpdateBattery(); break;
         default: ;

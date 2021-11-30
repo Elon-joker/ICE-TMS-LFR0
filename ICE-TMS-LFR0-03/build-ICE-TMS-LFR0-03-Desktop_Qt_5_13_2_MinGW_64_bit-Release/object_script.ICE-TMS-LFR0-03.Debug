@@ -1,3 +1,4 @@
+debug/log.o
 debug/main.o
 debug/mainwindow.o
 debug/qcustomplot.o

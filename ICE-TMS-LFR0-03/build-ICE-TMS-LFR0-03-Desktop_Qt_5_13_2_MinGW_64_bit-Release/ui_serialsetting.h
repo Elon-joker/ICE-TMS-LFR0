@@ -65,8 +65,7 @@ public:
         QFont font;
         font.setPointSize(14);
         label->setFont(font);
-        label->setStyleSheet(QString::fromUtf8("color: rgb(0, 0, 0);\n"
-"background-color: rgb(255, 255, 255,0);"));
+        label->setStyleSheet(QString::fromUtf8(""));
 
         verticalLayout->addWidget(label);
 
@@ -75,7 +74,7 @@ public:
         label_2->setMinimumSize(QSize(0, 25));
         label_2->setMaximumSize(QSize(16777215, 25));
         label_2->setFont(font);
-        label_2->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 255,0);"));
+        label_2->setStyleSheet(QString::fromUtf8(""));
 
         verticalLayout->addWidget(label_2);
 
@@ -84,7 +83,7 @@ public:
         label_4->setMinimumSize(QSize(0, 25));
         label_4->setMaximumSize(QSize(16777215, 25));
         label_4->setFont(font);
-        label_4->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 255,0);"));
+        label_4->setStyleSheet(QString::fromUtf8(""));
 
         verticalLayout->addWidget(label_4);
 
@@ -93,7 +92,7 @@ public:
         label_3->setMinimumSize(QSize(0, 25));
         label_3->setMaximumSize(QSize(16777215, 25));
         label_3->setFont(font);
-        label_3->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 255,0);"));
+        label_3->setStyleSheet(QString::fromUtf8(""));
 
         verticalLayout->addWidget(label_3);
 
@@ -101,7 +100,7 @@ public:
         label_5->setObjectName(QString::fromUtf8("label_5"));
         label_5->setMaximumSize(QSize(16777215, 25));
         label_5->setFont(font);
-        label_5->setStyleSheet(QString::fromUtf8("background-color: rgb(255, 255, 255,0);"));
+        label_5->setStyleSheet(QString::fromUtf8(""));
 
         verticalLayout->addWidget(label_5);
 

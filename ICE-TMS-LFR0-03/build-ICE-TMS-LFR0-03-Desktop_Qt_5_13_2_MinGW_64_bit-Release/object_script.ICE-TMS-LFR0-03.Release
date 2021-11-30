@@ -1,3 +1,4 @@
+release/log.o
 release/main.o
 release/mainwindow.o
 release/qcustomplot.o

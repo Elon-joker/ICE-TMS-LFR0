@@ -1,23 +1,24 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "titlebar.h"
+#include "log.h"
 
 #include <QDebug>
 
 #define HEAD 0xABCD
 #define ROW 8
-#define COLUMN 100
+#define COLUMN 10
 
 #define P 0.256/32768.0
 
 #define P1 0.04161
 #define P2 -0.1395
 #define BATTERY_MAX 3.0
-#define BATTERY_MIN 2.0
+#define BATTERY_MIN 2.5
 
 #define F(x,y) ( ((x)*1000-P2)/(P1)+(y) )
 #define GS(x) ( (x)>COLUMN?(x)-COLUMN:0 )
-#define CHECK(x) x //( (x)>32768?0:(x) )
+#define CHECK(x) x
 
 #define TEMPERTURE_MAX 500
 #define TEMPERTURE_DELTA 10
@@ -73,15 +74,9 @@ MainWindow::MainWindow(QWidget *parent)
       dir.mkpath(sublistPath);
     }
 
-    //定时器，用于更新电池电量
-    timer = new QTimer();
-
     //链接信号与槽（即动作与响应的关联）
     //connect（谁发出信号，什么信号，谁响应事件，什么响应事件）；
     connect(ui->btnSerialSetting,SIGNAL(clicked()),this,SLOT(on_serialSetting()));//窗口设置
-    connect(ui->btnSave,SIGNAL(clicked()),this,SLOT(on_saveButton_clicked()));
-    connect(timer,&QTimer::timeout,this,&MainWindow::UpdateBattery);//更新电池电量
-
 }
 
 MainWindow::~MainWindow()
@@ -101,17 +96,8 @@ void MainWindow::on_OpenSerialButton_clicked()
 {
     if(setting->getPortName()==tr("NO"))
     {
-    //设置弹窗，防止无串口输出异常
-    QMessageBox msg0(this);  //对话框设置父组件
-    msg0.setWindowTitle("错误提示！");//对话框标题
-    msg0.setText("未发现串口!");//对话框提示文本
-    msg0.setIcon(QMessageBox::Information);//设置图标类型
-    msg0.setStandardButtons(QMessageBox::Ok | QMessageBox:: Cancel);//对话框上包含的按钮
-
-    if(msg0.exec() == QMessageBox::Ok)  // 判断是否退出弹窗
-    {
-       qDebug() << " Ok is clicked!";   //数据处理
-    }
+    //提示串口错误
+      Log::warming("串口错误","未发现串口",this);
     }
     else {
         if(ui->OpenSerialButton->text() == tr("打开串口"))
@@ -183,6 +169,11 @@ void MainWindow::on_OpenSerialButton_clicked()
             serial->deleteLater();
 
             ui->OpenSerialButton->setText(tr("打开串口"));
+            //将保存数据相关内容清空
+            ui->btnSave->setText("开始记录");
+            flageSaveData=false;
+            sequence_last=-1;
+            sequence_error_count=0;
 
         }
 
@@ -200,105 +191,12 @@ void MainWindow::on_OpenSerialButton_clicked()
  */
 void MainWindow::ReadData()
 {
-   buf=serial->readAll();//将串口里的可读信息全部读取
-   buf_hex=buf.data();
-// 注意：buf_hex里面的数据有四个字节，即buf_hex[0]=0xff_ff_ff_ab
-//   if(((buf_hex[0]&0xff)<<8|(buf_hex[1]&0xff))==HEAD)
-//       qDebug()<<"成功！";
-   if(!buf.isEmpty()&&( (buf_hex[0]&0xff)<<8 | (buf_hex[1]&0xff) )==HEAD)//数据根据包头校验数据
-   {
-        //协议解析
-        //解析出数据存储到对应位置
-        //异常数据的排除机制 TODO 考虑做到下位机中
-       sequence=static_cast<int>( (buf_hex[2]&0xff)<<8 | (buf_hex[3]&0xff) );
-       ID=static_cast<unsigned int>( (buf_hex[7]&0xff)<<24|(buf_hex[6]&0xff)<<16|(buf_hex[5]&0xff)<<8|(buf_hex[4]&0xff) );
-       Temperature=static_cast<double>(buf_hex[24]&0xff)-55.0;
-       Voltage=static_cast<double>(buf_hex[25]&0xff)/100+1.22;
-       CRC=static_cast<char>(buf_hex[26]&0xff);
-
-       //动态存储数据
-       int maxIndex=0,minIndex=0;
-       double maxT=0.0,minT=INT_MAX;
-       //数据转换
-       for(int i=0;i<8;i++){
-           double data_temp=CHECK(static_cast<int16_t>( (buf_hex[8+i*2]&0xff)<<8|(buf_hex[9+i*2]&0xff) ))*P;
-
-           if(count < COLUMN)
-           {
-               y[i][count]=F(data_temp,Temperature);
-               x[i][count]=count;
-           }
-           else
-           {
-               //容器数据现在是正好COLUMN个  把第一个出栈  把第COLUMN+1个入栈  正好还是COLUMN个数据
-               y[i].removeFirst();
-               x[i].removeFirst();
-               //入栈
-               y[i].append(F(data_temp,Temperature));
-               x[i].append(count);
-           }
-
-           if(maxT<y[i][count%COLUMN])
-           {
-               maxT=y[i][count%COLUMN];
-               maxIndex=i;
-           }
-           if(minT>y[i][count%COLUMN])
-           {
-               minT=y[i][count%COLUMN];
-               minIndex=i;
-           }
-
-       }
-
-       ui->lbMsg->setText(tr("最高温度:\t%1\t通道数:\t%2\t\t最低温度:\t%3\t通道数 %4")
-                          .arg(maxT).arg(maxIndex+1).arg(minT).arg(minIndex+1));
-
-       if(flageSaveData)
-       {
-           //由于数据传输较慢，所以每一帧数据直接存储
-           QString m;
-           m.append(tr("%1\t").arg(count));
-           m.append(tr("%1\t").arg(ID&0xffffffff,0,16).toUpper());
-           m.append(tr("%1\t").arg(sequence));
-           for (int j=0;j<8;j++)
-           {
-               m.append(tr("%1\t").arg(y[j][count%COLUMN]));
-           }
-           m.append(tr("%1\t").arg(Temperature));
-           m.append(tr("%1\t").arg(Voltage));
-           //时间
-           QDateTime current_date_time = QDateTime::currentDateTime();
-            m.append(current_date_time.toString("yyyy-MM-dd hh:mm::ss\n"));
-           //检测丢帧
-           if(sequence_last!=-1)//起始标号
-           {
-               sequence_error_count+=sequence-sequence_last-1;
-               sequence_last=sequence;
-           }
-           else
-           {
-               sequence_last=sequence;
-           }
-           if(count%100==0)
-           {
-               m.append(tr("%1\n").arg(sequence_error_count*1.0/100));
-               sequence_error_count=0;
-           }
-
-           saveData(m,sublistPath,sublistFile);
-       }
-
-       //得到一组数据后即绘制一次图像
-       showChart();
-
-       ui->ID->setText(tr("%1").arg(ID&0xffffffff,0,16).toUpper());
-       ui->temp->setText(tr("%1").arg(static_cast<double>(Temperature)));
-       ui->voltage->setText(tr("%1").arg(static_cast<double>(Voltage)));
-
-       count++;
-   }
-
+   //接收数据
+   sleep(50);//为防止数据未完全接收，增加延时等待接收完毕
+   buf_hex=serial->readAll();//将串口里的可读信息全部读取
+   qDebug()<<buf_hex;
+   if(buf_hex.size()>30)
+        dataProcess(buf_hex);
 }
 
  /**
@@ -337,35 +235,44 @@ void MainWindow::showChart()
  * @author    占建
  * @situation TODO 保存八通道数据-》用户选择路径
  */
-void MainWindow::on_saveButton_clicked()
+void MainWindow::on_btnSave_clicked()
 {
-    if(ui->btnSave->text()==tr("开始记录"))
-    {
-        ui->btnSave->setText("停止记录");
-        //由于数据传输较慢，所以每一帧数据直接存储
-        QString m;
-        m.append(tr("%1\t").arg(ID&0xffffffff,0,16).toUpper());
-        m.append(tr("%1\t").arg(sequence));
-        for (int j=0;j<8;j++)
-        {
-            m.append(tr("%1\t").arg(y[j][count%COLUMN]));
+    if(ui->btnSave->text()==tr("开始记录")){
+        if(ui->OpenSerialButton->text()==tr("关闭串口")){
+            if(setting->getPortName()!=tr("NO")){
+                ui->btnSave->setText("停止记录");
+                //由于数据传输较慢，所以每一帧数据直接存储
+                QString m;
+                m.append(tr("%1\t").arg(ID&0xffffffff,0,16).toUpper());
+                m.append(tr("%1\t").arg(sequence));
+                for (int j=0;j<8;j++)
+                {
+                    m.append(tr("%1\t").arg(y[j][count%COLUMN]));
+                }
+                m.append(tr("%1\t").arg(static_cast<double>(Temperature)));
+                m.append(tr("%1\t").arg(Voltage));
+                //时间
+                QDateTime current_date_time = QDateTime::currentDateTime();
+                QString date=current_date_time.toString("yyyy-MM-dd hh:mm::ss");
+                 m.append(date+"\n");
+                 //保存总表
+                summaryFile=QDateTime::currentDateTime().toString("yyyy-MM-dd")+".txt";
+                saveData(m,summaryPath,summaryFile);
+                //保存子表，开启子表保存
+                sublistFile=QDateTime::currentDateTime().toString("yyyy-MM-dd-hh-mm-ss")+".txt";
+                saveData(m,sublistPath,sublistFile);
+                flageSaveData=true;
+            }
+            else{
+                Log::warming("串口错误","未找到串口",this);
+            }
         }
-        m.append(tr("%1\t").arg(Temperature));
-        m.append(tr("%1\t").arg(Voltage));
-        //时间
-        QDateTime current_date_time = QDateTime::currentDateTime();
-        QString date=current_date_time.toString("yyyy-MM-dd hh:mm::ss");
-         m.append(date+"\n");
-         //保存总表
-        summaryFile=QDateTime::currentDateTime().toString("yyyy-MM-dd")+".txt";
-        saveData(m,summaryPath,summaryFile);
-        //保存子表，开启子表保存
-        sublistFile=QDateTime::currentDateTime().toString("yyyy-MM-dd-hh-mm-ss")+".txt";
-        saveData(m,sublistPath,sublistFile);
-        flageSaveData=true;
+        else{
+            Log::warming("串口错误","串口未打开！",this);
+        }
+
     }
-    else
-    {
+    else{
         ui->btnSave->setText("开始记录");
         flageSaveData=false;
     }
@@ -427,6 +334,7 @@ void MainWindow::init()
     Voltage=BATTERY_MIN;
 
     ui->lbMsg->setText("最高温度:\t*\t通道数:\t*\t\t最低温度:\t*\t通道数:\t*");
+    UpdateBattery();
 }
 
 void MainWindow::on_serialSetting()
@@ -464,9 +372,16 @@ void MainWindow::saveData(QString data,QString path,QString fileName)
     file.close();
 }
 
+/* ******************************************************************************
+ * @author 占建
+ * @date   2021-09-09
+ * *****************************************************************************/
+/**
+ * @brief MainWindow::UpdateBattery
+ *        用于更新电池电量显示
+ */
 void MainWindow::UpdateBattery()
 {
-    //
     QProgressBar *pProgressBar = ui->pbBattery;
     pProgressBar->setOrientation(Qt::Horizontal);  // 水平方向
     int batteryValue=static_cast<int>(((Voltage>3.0?3.0:Voltage)-BATTERY_MIN)*1000/(BATTERY_MAX-BATTERY_MIN));
@@ -511,10 +426,9 @@ void MainWindow::UpdateBattery()
     pProgressBar->setAlignment(Qt::AlignVCenter);  // 对齐方式
 }
 
-
 bool MainWindow::checkData()
 {
-    if(count==0)
+    if(count<10)//前10帧内的数据不做校验
         return true;
     for (int i=0;i<8;i++)
     {
@@ -527,3 +441,117 @@ bool MainWindow::checkData()
 
     return true;
 }
+
+void MainWindow::dataProcess(QByteArray data)
+{
+    //协议解析
+    //解析出数据存储到对应位置
+   sequence=static_cast<int>( (data[2]&0xff)<<8 | (data[3]&0xff) );
+   ID=static_cast<unsigned int>( (data[7]&0xff)<<24|(data[6]&0xff)<<16|(data[5]&0xff)<<8|(data[4]&0xff) );
+   Temperature=static_cast<float>(data[24]&0xff)-55.0f;
+   Voltage=static_cast<double>(data[25]&0xff)/100+1.22;
+   CRC=static_cast<char>(data[26]&0xff);
+
+   //动态存储数据
+   int maxIndex=0,minIndex=0;
+   double maxT=0.0,minT=INT_MAX;
+   //数据转换
+   for(int i=0;i<8;i++){
+       double data_temp=CHECK(static_cast<int16_t>( (data[8+i*2]&0xff)<<8|(data[9+i*2]&0xff) ))*P;
+
+       if(count < COLUMN)
+       {
+           y[i][count]=F(data_temp,static_cast<double>(Temperature));
+           x[i][count]=count;
+       }
+       else
+       {
+           //容器数据现在是正好COLUMN个  把第一个出栈  把第COLUMN+1个入栈  正好还是COLUMN个数据
+           y[i].removeFirst();
+           x[i].removeFirst();
+           //入栈
+           y[i].append(F(data_temp,static_cast<double>(Temperature)));
+           x[i].append(count);
+       }
+
+       if(maxT<y[i][count%COLUMN])
+       {
+           maxT=y[i][count%COLUMN];
+           maxIndex=i;
+       }
+       if(minT>y[i][count%COLUMN])
+       {
+           minT=y[i][count%COLUMN];
+           minIndex=i;
+       }
+
+   }
+
+   ui->lbMsg->setText(tr("最高温度:\t%1\t通道数:\t%2\t\t最低温度:\t%3\t通道数 %4")
+                      .arg(maxT).arg(maxIndex+1).arg(minT).arg(minIndex+1));
+
+   if(flageSaveData)
+   {
+       //由于数据传输较慢，所以每一帧数据直接存储
+       QString m;
+       m.append(tr("%1\t").arg(count));
+       m.append(tr("%1\t").arg(ID&0xffffffff,0,16).toUpper());
+       m.append(tr("%1\t").arg(sequence));
+       for (int j=0;j<8;j++)
+       {
+           m.append(tr("%1\t").arg(y[j][count%COLUMN]));
+       }
+       m.append(tr("%1\t").arg(static_cast<double>(Temperature)));
+       m.append(tr("%1\t").arg(Voltage));
+       //时间
+       QDateTime current_date_time = QDateTime::currentDateTime();
+        m.append(current_date_time.toString("yyyy-MM-dd hh:mm::ss\n"));
+       //检测丢帧
+       if(sequence_last!=-1)//起始标号
+       {
+           sequence_error_count+=sequence-sequence_last-1;
+           sequence_last=sequence;
+       }
+       else
+       {
+           sequence_last=sequence;
+       }
+       if(count%100==0)
+       {
+           m.append(tr("%1\n").arg(sequence_error_count*1.0/100));
+           sequence_error_count=0;
+       }
+
+       saveData(m,sublistPath,sublistFile);
+   }
+
+   //得到一组数据后即绘制一次图像
+   showChart();
+
+   ui->ID->setText(tr("%1").arg(ID&0xffffffff,0,16).toUpper());
+   ui->temp->setText(tr("%1").arg(static_cast<double>(Temperature)));
+   ui->voltage->setText(tr("%1").arg(static_cast<double>(Voltage)));
+
+   //更新电量
+   UpdateBattery();
+
+   count++;
+}
+
+/**
+ * @brief MainWindow::sleep
+ *        简单的延时函数
+ * @param msec 延时时间，单位毫秒
+ */
+void MainWindow::sleep(int msec)
+{
+    QTime dieTime = QTime::currentTime().addMSecs(msec);
+    while( QTime::currentTime() < dieTime )
+        {
+        QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+        //这条语句能够使程序在while等待期间，去处理一下本线程的事件循环，处理事件循环最多100ms必须返回本语句，
+        //如果提前处理完毕，则立即返回这条语句。这也就导致了该Delay_MSec函数的定时误差可能高达100ms。
+    }
+
+}
+
